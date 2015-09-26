@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b76cbc2adbb44f45a3c0c91318e6c2cf" Name="Diagram1">
+        <EntityTypeShape EntityType="BarberModel.Client" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BarberModel.PriceHistory" Width="1.5" PointX="5.25" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BarberModel.Resource" Width="1.5" PointX="5.25" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BarberModel.Resource2Service" Width="1.5" PointX="7.5" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="BarberModel.Service" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="BarberModel.ServiceType" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BarberModel.sysdiagrams" Width="1.5" PointX="7.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BarberModel.Visit" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <AssociationConnector Association="BarberModel.FK_Visit_Client" ManuallyRouted="false" />
+        <AssociationConnector Association="BarberModel.FK_Resource_PriceHistory" ManuallyRouted="false" />
+        <AssociationConnector Association="BarberModel.FK_Resource2Service_PriceHistory" ManuallyRouted="false" />
+        <AssociationConnector Association="BarberModel.FK_Resource2Service_Resource" ManuallyRouted="false" />
+        <AssociationConnector Association="BarberModel.FK_Resource2Service_Service" ManuallyRouted="false" />
+        <AssociationConnector Association="BarberModel.FK_Service_Visit" ManuallyRouted="false" />
+        <AssociationConnector Association="BarberModel.FK_ServiceType_Service" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="BarberModel.Calendar" Width="1.5" PointX="3" PointY="8.5" />
+        <AssociationConnector Association="BarberModel.FK_Calendar_Client" />
+        <EntityTypeShape EntityType="BarberModel.ResourceHistory" Width="1.5" PointX="7.5" PointY="8.25" />
+        <AssociationConnector Association="BarberModel.FK_Resource_ResourceHistory" />
+        <AssociationConnector Association="BarberModel.FK_ResourceHistory_Resource" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
