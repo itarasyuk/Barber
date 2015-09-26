@@ -12,19 +12,23 @@ namespace Barber.Repository.Dal
     using System;
     using System.Collections.Generic;
     
-    public partial class PriceHistory
+    public partial class ResourceHistory
     {
-        public PriceHistory()
+        public ResourceHistory()
         {
             this.Resource = new HashSet<Resource>();
             this.Resource2Service = new HashSet<Resource2Service>();
         }
     
         public int ID { get; set; }
+        public int ResourceID { get; set; }
         public decimal Price { get; set; }
         public System.DateTime TimeStamp { get; set; }
+        public double Available { get; set; }
+        public double MinQuantity { get; set; }
     
         public virtual ICollection<Resource> Resource { get; set; }
+        public virtual Resource Resource1 { get; set; }
         public virtual ICollection<Resource2Service> Resource2Service { get; set; }
     }
 }

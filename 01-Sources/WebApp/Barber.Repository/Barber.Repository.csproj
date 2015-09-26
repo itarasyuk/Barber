@@ -69,13 +69,13 @@
     <Compile Include="Dal\Client.cs">
       <DependentUpon>BarberContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Dal\PriceHistory.cs">
-      <DependentUpon>BarberContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="Dal\Resource.cs">
       <DependentUpon>BarberContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Dal\Resource2Service.cs">
+      <DependentUpon>BarberContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dal\ResourceHistory.cs">
       <DependentUpon>BarberContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Dal\Service.cs">
@@ -84,7 +84,10 @@
     <Compile Include="Dal\ServiceType.cs">
       <DependentUpon>BarberContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Dal\sysdiagrams.cs">
+    <Compile Include="Dal\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>BarberContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dal\sp_helpdiagrams_Result.cs">
       <DependentUpon>BarberContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Dal\Visit.cs">

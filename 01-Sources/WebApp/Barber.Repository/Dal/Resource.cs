@@ -16,18 +16,17 @@ namespace Barber.Repository.Dal
     {
         public Resource()
         {
-            this.Resource2Service = new HashSet<Resource2Service>();
+            this.ResourceHistory1 = new HashSet<ResourceHistory>();
         }
     
         public int ID { get; set; }
         public string Name { get; set; }
-        public int CurrentPriceHistoryID { get; set; }
+        public int CurrentResourceHistoryID { get; set; }
         public string Description { get; set; }
-        public double AvailableQuantity { get; set; }
-        public double MinQuantity { get; set; }
         public bool IsHidden { get; set; }
+        public byte[] TimesStamp { get; set; }
     
-        public virtual PriceHistory PriceHistory { get; set; }
-        public virtual ICollection<Resource2Service> Resource2Service { get; set; }
+        public virtual ResourceHistory ResourceHistory { get; set; }
+        public virtual ICollection<ResourceHistory> ResourceHistory1 { get; set; }
     }
 }

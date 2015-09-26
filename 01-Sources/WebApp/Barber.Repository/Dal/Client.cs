@@ -16,8 +16,8 @@ namespace Barber.Repository.Dal
     {
         public Client()
         {
-            this.Visit = new HashSet<Visit>();
             this.Calendar = new HashSet<Calendar>();
+            this.Visit = new HashSet<Visit>();
         }
     
         public int ID { get; set; }
@@ -27,7 +27,7 @@ namespace Barber.Repository.Dal
         public string Description { get; set; }
         public bool IsHidden { get; set; }
     
-        public virtual ICollection<Visit> Visit { get; set; }
         public virtual ICollection<Calendar> Calendar { get; set; }
+        public virtual ICollection<Visit> Visit { get; set; }
     }
 }

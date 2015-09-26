@@ -22,6 +22,7 @@ namespace Barber.Repository.Dal
         public int ID { get; set; }
         public string Name { get; set; }
         public bool IsHidden { get; set; }
+        public string Description { get; set; }
     
         public virtual ICollection<Service> Service { get; set; }
     }
