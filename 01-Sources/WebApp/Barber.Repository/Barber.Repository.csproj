@@ -69,6 +69,9 @@
     <Compile Include="Dal\Client.cs">
       <DependentUpon>BarberContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Dal\QuantityType.cs">
+      <DependentUpon>BarberContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Dal\Resource.cs">
       <DependentUpon>BarberContext.tt</DependentUpon>
     </Compile>
