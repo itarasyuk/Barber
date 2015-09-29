@@ -22,8 +22,16 @@
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" />
           <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="IsHidden" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QuantityType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Resource">
           <Key>
@@ -32,9 +40,11 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="CurrentResourceHistoryID" Type="int" Nullable="false" />
+          <Property Name="QuantityForPrice" Type="float" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" />
-          <Property Name="IsHidden" Type="bit" Nullable="false" />
           <Property Name="TimesStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="IsHidden" Type="bit" Nullable="false" />
+          <Property Name="QuantityTypeID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Resource2Service">
           <Key>
@@ -55,8 +65,6 @@
           <Property Name="ResourceID" Type="int" Nullable="false" />
           <Property Name="Price" Type="decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="TimeStamp" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="Available" Type="float" Nullable="false" />
-          <Property Name="MinQuantity" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="Service">
           <Key>
@@ -65,6 +73,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="VisitID" Type="int" Nullable="false" />
           <Property Name="ServiceTypeID" Type="int" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="SpentTime" Type="time" Precision="7" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="IsHidden" Type="int" Nullable="false" />
@@ -96,6 +105,18 @@
             </Principal>
             <Dependent Role="Calendar">
               <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Resource_QuantityType">
+          <End Role="QuantityType" Type="Self.QuantityType" Multiplicity="1" />
+          <End Role="Resource" Type="Self.Resource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuantityType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Resource">
+              <PropertyRef Name="QuantityTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -217,6 +238,7 @@
         <EntityContainer Name="BarberModelStoreContainer">
           <EntitySet Name="Calendar" EntityType="Self.Calendar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuantityType" EntityType="Self.QuantityType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Resource" EntityType="Self.Resource" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Resource2Service" EntityType="Self.Resource2Service" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ResourceHistory" EntityType="Self.ResourceHistory" Schema="dbo" store:Type="Tables" />
@@ -226,6 +248,10 @@
           <AssociationSet Name="FK_Calendar_Client" Association="Self.FK_Calendar_Client">
             <End Role="Client" EntitySet="Client" />
             <End Role="Calendar" EntitySet="Calendar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Resource_QuantityType" Association="Self.FK_Resource_QuantityType">
+            <End Role="QuantityType" EntitySet="QuantityType" />
+            <End Role="Resource" EntitySet="Resource" />
           </AssociationSet>
           <AssociationSet Name="FK_Resource_ResourceHistory" Association="Self.FK_Resource_ResourceHistory">
             <End Role="ResourceHistory" EntitySet="ResourceHistory" />
@@ -293,6 +319,7 @@
           <FunctionImport Name="sp_upgraddiagrams" />
           <EntitySet Name="Calendar" EntityType="BarberModel.Calendar" />
           <EntitySet Name="Client" EntityType="BarberModel.Client" />
+          <EntitySet Name="QuantityType" EntityType="BarberModel.QuantityType" />
           <EntitySet Name="Resource" EntityType="BarberModel.Resource" />
           <EntitySet Name="Resource2Service" EntityType="BarberModel.Resource2Service" />
           <EntitySet Name="ResourceHistory" EntityType="BarberModel.ResourceHistory" />
@@ -306,6 +333,10 @@
           <AssociationSet Name="FK_Visit_Client" Association="BarberModel.FK_Visit_Client">
             <End Role="Client" EntitySet="Client" />
             <End Role="Visit" EntitySet="Visit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Resource_QuantityType" Association="BarberModel.FK_Resource_QuantityType">
+            <End Role="QuantityType" EntitySet="QuantityType" />
+            <End Role="Resource" EntitySet="Resource" />
           </AssociationSet>
           <AssociationSet Name="FK_Resource_ResourceHistory" Association="BarberModel.FK_Resource_ResourceHistory">
             <End Role="ResourceHistory" EntitySet="ResourceHistory" />
@@ -331,7 +362,7 @@
             <End Role="ServiceType" EntitySet="ServiceType" />
             <End Role="Service" EntitySet="Service" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -361,10 +392,19 @@
           <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsHidden" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Calendar" Relationship="BarberModel.FK_Calendar_Client" FromRole="Client" ToRole="Calendar" />
           <NavigationProperty Name="Visit" Relationship="BarberModel.FK_Visit_Client" FromRole="Client" ToRole="Visit" />
+        </EntityType>
+        <EntityType Name="QuantityType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Resource" Relationship="BarberModel.FK_Resource_QuantityType" FromRole="QuantityType" ToRole="Resource" />
         </EntityType>
         <EntityType Name="Resource">
           <Key>
@@ -373,9 +413,12 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="CurrentResourceHistoryID" Type="Int32" Nullable="false" />
+          <Property Name="QuantityForPrice" Type="Double" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IsHidden" Type="Boolean" Nullable="false" />
           <Property Name="TimesStamp" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="IsHidden" Type="Boolean" Nullable="false" />
+          <Property Name="QuantityTypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="QuantityType" Relationship="BarberModel.FK_Resource_QuantityType" FromRole="Resource" ToRole="QuantityType" />
           <NavigationProperty Name="ResourceHistory" Relationship="BarberModel.FK_Resource_ResourceHistory" FromRole="Resource" ToRole="ResourceHistory" />
           <NavigationProperty Name="ResourceHistory1" Relationship="BarberModel.FK_ResourceHistory_Resource" FromRole="Resource" ToRole="ResourceHistory" />
         </EntityType>
@@ -400,8 +443,6 @@
           <Property Name="ResourceID" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
           <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="Available" Type="Double" Nullable="false" />
-          <Property Name="MinQuantity" Type="Double" Nullable="false" />
           <NavigationProperty Name="Resource" Relationship="BarberModel.FK_Resource_ResourceHistory" FromRole="ResourceHistory" ToRole="Resource" />
           <NavigationProperty Name="Resource1" Relationship="BarberModel.FK_ResourceHistory_Resource" FromRole="ResourceHistory" ToRole="Resource" />
           <NavigationProperty Name="Resource2Service" Relationship="BarberModel.FK_Resource2Service_ResourceHistory" FromRole="ResourceHistory" ToRole="Resource2Service" />
@@ -413,6 +454,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="VisitID" Type="Int32" Nullable="false" />
           <Property Name="ServiceTypeID" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
           <Property Name="SpentTime" Type="Time" Precision="7" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsHidden" Type="Int32" Nullable="false" />
@@ -462,6 +504,18 @@
             </Principal>
             <Dependent Role="Visit">
               <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Resource_QuantityType">
+          <End Type="BarberModel.QuantityType" Role="QuantityType" Multiplicity="1" />
+          <End Type="BarberModel.Resource" Role="Resource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuantityType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Resource">
+              <PropertyRef Name="QuantityTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -537,7 +591,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -582,6 +636,7 @@
               <MappingFragment StoreEntitySet="Client">
                 <ScalarProperty Name="IsHidden" ColumnName="IsHidden" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -589,12 +644,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="QuantityType">
+            <EntityTypeMapping TypeName="BarberModel.QuantityType">
+              <MappingFragment StoreEntitySet="QuantityType">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Resource">
             <EntityTypeMapping TypeName="BarberModel.Resource">
               <MappingFragment StoreEntitySet="Resource">
-                <ScalarProperty Name="TimesStamp" ColumnName="TimesStamp" />
+                <ScalarProperty Name="QuantityTypeID" ColumnName="QuantityTypeID" />
                 <ScalarProperty Name="IsHidden" ColumnName="IsHidden" />
+                <ScalarProperty Name="TimesStamp" ColumnName="TimesStamp" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="QuantityForPrice" ColumnName="QuantityForPrice" />
                 <ScalarProperty Name="CurrentResourceHistoryID" ColumnName="CurrentResourceHistoryID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -616,8 +681,6 @@
           <EntitySetMapping Name="ResourceHistory">
             <EntityTypeMapping TypeName="BarberModel.ResourceHistory">
               <MappingFragment StoreEntitySet="ResourceHistory">
-                <ScalarProperty Name="MinQuantity" ColumnName="MinQuantity" />
-                <ScalarProperty Name="Available" ColumnName="Available" />
                 <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
@@ -631,6 +694,7 @@
                 <ScalarProperty Name="IsHidden" ColumnName="IsHidden" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="SpentTime" ColumnName="SpentTime" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="ServiceTypeID" ColumnName="ServiceTypeID" />
                 <ScalarProperty Name="VisitID" ColumnName="VisitID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -657,7 +721,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

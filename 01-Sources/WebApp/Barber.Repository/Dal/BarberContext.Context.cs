@@ -29,6 +29,7 @@ namespace Barber.Repository.Dal
     
         public virtual DbSet<Calendar> Calendar { get; set; }
         public virtual DbSet<Client> Client { get; set; }
+        public virtual DbSet<QuantityType> QuantityType { get; set; }
         public virtual DbSet<Resource> Resource { get; set; }
         public virtual DbSet<Resource2Service> Resource2Service { get; set; }
         public virtual DbSet<ResourceHistory> ResourceHistory { get; set; }

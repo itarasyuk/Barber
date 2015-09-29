@@ -22,6 +22,7 @@ namespace Barber.Repository.Dal
         public int ID { get; set; }
         public int VisitID { get; set; }
         public int ServiceTypeID { get; set; }
+        public decimal Price { get; set; }
         public Nullable<System.TimeSpan> SpentTime { get; set; }
         public string Description { get; set; }
         public int IsHidden { get; set; }

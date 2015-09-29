@@ -5,16 +5,18 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="b76cbc2adbb44f45a3c0c91318e6c2cf" Name="Diagram1">
-        <EntityTypeShape EntityType="BarberModel.Calendar" Width="1.5" PointX="3" PointY="4.25" />
-        <EntityTypeShape EntityType="BarberModel.Client" Width="1.5" PointX="0.75" PointY="2.5" />
-        <EntityTypeShape EntityType="BarberModel.Resource" Width="1.5" PointX="3" PointY="11.25" />
-        <EntityTypeShape EntityType="BarberModel.Resource2Service" Width="1.5" PointX="7.5" PointY="1.25" />
+        <EntityTypeShape EntityType="BarberModel.Calendar" Width="1.5" PointX="3" PointY="1.5" />
+        <EntityTypeShape EntityType="BarberModel.Client" Width="1.5" PointX="0.75" PointY="2.625" />
+        <EntityTypeShape EntityType="BarberModel.QuantityType" Width="1.5" PointX="0.75" PointY="11.5" />
+        <EntityTypeShape EntityType="BarberModel.Resource" Width="1.5" PointX="3" PointY="10.75" />
+        <EntityTypeShape EntityType="BarberModel.Resource2Service" Width="1.5" PointX="7.5" PointY="4" />
         <EntityTypeShape EntityType="BarberModel.ResourceHistory" Width="1.5" PointX="5.25" PointY="11.125" />
-        <EntityTypeShape EntityType="BarberModel.Service" Width="1.5" PointX="5.25" PointY="1.125" />
-        <EntityTypeShape EntityType="BarberModel.ServiceType" Width="1.5" PointX="3" PointY="7.5" />
-        <EntityTypeShape EntityType="BarberModel.Visit" Width="1.5" PointX="3" PointY="1.375" />
+        <EntityTypeShape EntityType="BarberModel.Service" Width="1.5" PointX="5.25" PointY="3.875" />
+        <EntityTypeShape EntityType="BarberModel.ServiceType" Width="1.5" PointX="3" PointY="7.375" />
+        <EntityTypeShape EntityType="BarberModel.Visit" Width="1.5" PointX="3" PointY="4.25" />
         <AssociationConnector Association="BarberModel.FK_Calendar_Client" />
         <AssociationConnector Association="BarberModel.FK_Visit_Client" />
+        <AssociationConnector Association="BarberModel.FK_Resource_QuantityType" />
         <AssociationConnector Association="BarberModel.FK_Resource_ResourceHistory" />
         <AssociationConnector Association="BarberModel.FK_ResourceHistory_Resource" />
         <AssociationConnector Association="BarberModel.FK_Resource2Service_ResourceHistory" />

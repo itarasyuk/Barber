@@ -24,8 +24,6 @@ namespace Barber.Repository.Dal
         public int ResourceID { get; set; }
         public decimal Price { get; set; }
         public System.DateTime TimeStamp { get; set; }
-        public double Available { get; set; }
-        public double MinQuantity { get; set; }
     
         public virtual ICollection<Resource> Resource { get; set; }
         public virtual Resource Resource1 { get; set; }
